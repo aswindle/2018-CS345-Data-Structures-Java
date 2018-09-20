@@ -1,0 +1,169 @@
+-----SORTED-----
+Results for sorted10:
+***Merge Sort:***
+41534 nanoseconds
+28 calls
+190 operations
+
+***Quick Sort:***
+13593 nanoseconds
+28 calls
+370 operations
+------------------------------
+Results for sorted100:
+***Merge Sort:***
+108744 nanoseconds
+298 calls
+3125 operations
+
+***Quick Sort:***
+584118 nanoseconds
+298 calls
+30790 operations
+------------------------------
+Results for sorted500:
+***Merge Sort:***
+900532 nanoseconds
+1498 calls
+19673 operations
+
+***Quick Sort:***
+1859965 nanoseconds
+1498 calls
+753990 operations
+------------------------------
+-----REVERSED-----
+Results for back10:
+***Merge Sort:***
+11705 nanoseconds
+28 calls
+194 operations
+
+***Quick Sort:***
+1888 nanoseconds
+28 calls
+220 operations
+------------------------------
+Results for back100:
+***Merge Sort:***
+22655 nanoseconds
+298 calls
+3165 operations
+
+***Quick Sort:***
+38136 nanoseconds
+298 calls
+15790 operations
+------------------------------
+Results for back500:
+***Merge Sort:***
+109876 nanoseconds
+1498 calls
+19729 operations
+
+***Quick Sort:***
+796319 nanoseconds
+1498 calls
+378990 operations
+------------------------------
+-----ALMOST SORTED-----
+Results for almostsorted100:
+***Merge Sort:***
+27186 nanoseconds
+298 calls
+3234 operations
+
+***Quick Sort:***
+29829 nanoseconds
+283 calls
+18339 operations
+------------------------------
+Results for almostsorted500:
+***Merge Sort:***
+110254 nanoseconds
+1498 calls
+20361 operations
+
+***Quick Sort:***
+902042 nanoseconds
+1474 calls
+431678 operations
+------------------------------
+Results for almostbackward100:
+***Merge Sort:***
+21900 nanoseconds
+298 calls
+3274 operations
+
+***Quick Sort:***
+36626 nanoseconds
+283 calls
+15567 operations
+------------------------------
+Results for almostbackward500:
+***Merge Sort:***
+1010407 nanoseconds
+1498 calls
+20482 operations
+***Quick Sort:***
+
+680779 nanoseconds
+1468 calls
+377584 operations
+------------------------------
+-----RANDOMIZED-----
+Results for random10:
+***Merge Sort:***
+6418 nanoseconds
+28 calls
+198 operations
+
+***Quick Sort:***
+1511 nanoseconds
+22 calls
+180 operations
+------------------------------
+Results for random100:
+***Merge Sort:***
+32095 nanoseconds
+298 calls
+3353 operations
+
+***Quick Sort:***
+7174 nanoseconds
+205 calls
+2669 operations
+------------------------------
+Results for random200:
+***Merge Sort:***
+52861 nanoseconds
+598 calls
+7500 operations
+
+***Quick Sort:***
+13593 nanoseconds
+409 calls
+6579 operations
+------------------------------
+Results for random500a:
+***Merge Sort:***
+1847128 nanoseconds
+1498 calls
+21298 operations
+
+***Quick Sort:***
+33604 nanoseconds
+1045 calls
+20191 operations
+------------------------------
+Results for random500b:
+***Merge Sort:***
+116295 nanoseconds
+1498 calls
+21331 operations
+
+***Quick Sort:***
+52861 nanoseconds
+1030 calls
+19794 operations
+------------------------------

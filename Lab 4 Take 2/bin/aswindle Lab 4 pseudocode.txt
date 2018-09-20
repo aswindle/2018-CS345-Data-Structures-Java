@@ -1,0 +1,198 @@
+Alex Swindle
+aswindle
+CSCV 345 Lab 4 Pseudocode
+
+SwindleList<T> class:
+	{Doubly-linked list class}
+	Node class:
+		T data
+		Node prev
+		Node next
+
+	Attributes:
+		Node front
+		Node back
+		int size
+	
+	Methods:
+		size(): returns size of list
+		get(i): return object at index i
+		add(obj): add obj to end of list
+		remove(obj): remove obj from the list
+		isEmpty()
+		contains(obj)
+		pop(): remove and return item at the front of the list
+
+Vertex class:
+	Attributes:
+		in: SwindleList<Edge> containing incoming edges
+		out: SwindleList<Edge> containing outgoing edges
+		name: String identifying the vertex
+		visited: flag for whether this vertex has been visited on a traversal
+		DDist: int storing current distance for Dijkstra's algorithm
+		level: int storing distance on BFS
+		path: String storing current path to vertex in Dijkstra's algorithm
+		
+	Methods:
+		addEdge(e): add an edge to the list
+		removeEdge(e): remove an edge from the list
+		isAdjacent(b): returns whether this vertex has an edge with b
+
+Edge class:
+	Attributes:
+		start, stop: Vertex objects that are the endpoints
+		weight: int storing edge's path weight
+		type: String used in BFS/DFS; also acts as a flag for whether it's been visited
+	
+	Methods:
+		opposite(a): returns endpoint vertex that isn't a
+
+Graph class:
+	Attributes:
+		V: SwindleList<Vertex> of vertices in graph
+		E: SwindleList<Edge> of edges in graph
+		verticesVisited: integer count of vertices visited on traversal
+	
+	Algorithm DFS(start):
+		Input: Vertex start
+		Output: prints type of each edge after performing a DFS
+		
+		resetAll()
+		{Use recursive helper function to actually perform DFS}
+		DFSrecurse(start)
+		if (verticesVisited != V.size()):
+			print message stating that the graph isn't connected
+		else:
+			printEdges()
+	
+	Algorithm DFSrecurse(start):
+		Input: Vertex start
+		Output: each edge will be labeled "Discovery" or "Back"
+		
+		{visit start; loop through its edges to find unvisited ones, recurse to those}
+		start.visited <- true
+		verticesVisited++
+		for each Edge e in start.edges:
+			{unvisited edges are the only ones handled}
+			if (e.type is "None"):
+				{look at the vertex across from start}
+				let end <- e.opposite(start)
+				{if it hasn't been visited, this is a discovery edge}
+				if (end.visited is false):
+					e.type <- "Discovery"
+					{continue searching using this new vertex}
+					DFSrecurse(end)
+				else:
+					e.type <- "Back"
+	
+	Algorithm BFS(start):
+		Input: Vertex start
+		Output: labels each edge as 'Discovery' or 'Back', unless the graph isn't connected
+		
+		resetAll()
+		start.visited <- true
+		verticesVisited++
+		
+		let queue <- new SwindleList<Vertex>
+		queue.add(start)
+		
+		while (!queue.isEmpty()):
+			{Pop the front vertex from the queue. Add its unvisited connections to the queue}
+			let cur <- queue.pop()
+			for each Edge e in cur.out:
+				{Only process edges that haven't been seen yet}
+				if (e.type is "None"):
+					let v <- e.opposite(cur)
+					if (v.visited is true):
+						e.type <- "Cross"
+					else:
+						v.level <- cur.level + 1
+						v.visited <- true
+						verticesVisited++
+						queue.add(v)
+						e.type <- "Discovery Level " + v.level
+		
+		if (verticesVisited != V.size()):
+			print message stating there was an error and the graph is not connected
+		else:
+			printEdges()
+	
+	Algorithm Dijkstra(start):
+		Input: Vertex start
+		Output: true if Dijkstra's algorithm can be performed, and each Vertex's DDist will be the shortest path from the start; false if any edge has a negative weight
+		
+		valid <- true {flag for whether the algorithm may be performed}
+		
+		{check for negative edge weights}
+		for each Edge e in E:
+			if (e.weight < 0):
+				print error message
+				valid <- false
+		
+		if (valid is true):
+			let queue <- new SwindleList<Vertex>
+			
+			{Initialize the distances for each vertex and add them to the queue. Start begins at 0, everything else at infinity}
+			for each Vertex v in V:
+				if (v != start):
+					v.DDist = infinity
+				else:
+					start.DDist = 0
+					start.path = start.name
+				queue.add(v)
+		
+			while (!queue.isEmpty()):
+				let min <- Vertex in queue with smallest DDist value
+				queue.remove(min)
+				
+				for each Edge e in min.out:
+					{Check each vertex adjacent to min}
+					let z <- e.opposite(min)
+					if (queue.contains(z)):
+						{if distance from min to z is shorter than z's current distance, update z's distance and path}
+						if (min.DDist + e.weight < z.DDist):
+							z.DDist <- min.DDist + e.weight
+							z.path <- min.path + z.name
+		
+		return valid	
+		
+	Algorithm printEdges():
+		for each Edge e in E:
+			print e
+	
+	Algorithm printVertices():
+		for each Vertex v in V:
+			print v
+	
+	Algorithm connect(start, stop, w):
+		Input: Vertex endpoints start and stop; integer w
+		Output: none
+		
+		let newEdge <- a new Edge with endpoints start and stop, weight w
+		start.addInEdge(newEdge)
+		stop.addOutEdge(newEdge)
+		E.addEdge(newEdge)
+		
+	Algorithm biconnect(a, b, w):
+		Input: Vertex endpoints a and b; integer w
+		Output: none
+		
+		connect(a, b, w)
+		connect(b, a, w)
+	
+	Algorithm resetVertices():
+		for each Vertex v in V:
+			{reset all of its states back to original}
+			v.visited <- false
+			v.DDist <- 0
+			v.level <- 0
+			v.path <- ""
+	
+	Algorithm resetEdges():
+		for each Edge e in E:
+			e.type = "None"
+
+	Algorithm resetAll():
+		resetEdges()
+		resetVertices()
+		verticesVisited <- 0

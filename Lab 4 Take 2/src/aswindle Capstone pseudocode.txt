@@ -1,0 +1,61 @@
+
+
+Algorithm hasUnvisited(v):
+	Input: Vertex v
+	Output: true if v has unvisited edges; false otherwise
+	
+	result <- false
+	for each edge e in v.out:
+		if (e.type is "None"):
+			result <- true
+	return result
+
+Algorithm getUnvisited(v):
+	Input: Vertex v
+	Output: unvisited outgoing Edge from v
+	
+	let result <- Edge object, initialized to null
+	if (hasUnvisited(v):
+		for each edge e in v.out:
+			if (e.type is "None"):
+				result <- e
+	return result
+
+Algorithm isEulerian():
+	Input: none
+	Output: true if an Eulerian tour is possible; false otherwise
+	
+	result <- true
+	for each edge e in E:
+		if (e.in.size() != e.out.size()):
+			result = false
+	return result
+
+Algorithm Euler():
+	Input: none
+	Output: prints an Eulerian tour of the graph or says it's not possible
+	
+	if(isEulerian()):
+		let path <- new SwindleList<String>
+		let vstack <- new Stack
+		let cur <- Vertex initialized to V.get(0)
+		vstack.push(cur)
+		
+		while(!vstack.isEmpty()):
+			if(hasUnvisited(cur)):
+				vstack.push(cur)
+				e <- getUnvisited(cur)
+				e.type <- "Visited"
+				cur <- e.stop
+			else:
+				path.add(cur.name)
+				cur = vstack.pop()
+		
+		{Reverse the order of the entries in path}
+		realPath <- ""
+		for (i from 1 upto path.size() + 1):
+			realPath += path.get(path.size()-i) + "->"
+		realPath <- realPath.substring(0, realPath.length()-2)
+		print realPath
+	else:
+		print message stating Eulerian tour is impossible

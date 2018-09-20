@@ -1,0 +1,79 @@
+Alex Swindle
+aswindle
+CSCV 345 Lab 3 Pseudocode
+
+Class HashCell:
+	value: String {Holds the String stored at that index}
+	state: int {0: empty; 1: full; 2: empty, but previously filled}
+
+hashTable <- array of HashCells initialized to be empty
+
+Algorithm hashFn(s):
+	Input: String s
+	Output: integer hash code
+	
+	k <- 0 {Initialize hash code to 0}
+	{Calculate the hash code character by character}
+	for i from 0 upto length of s:
+		{get next character from the string}
+		cur <- s[i]
+		{multiply the previous result by a prime, add current character}
+		k <- k*7 + cur
+	{Ensure hash code is a positive number in the range 0 to hashTable size}
+	hashVal <- k % (hashTable.length)
+	if (hashVal < 0):
+		hashVal <- -hashVal
+	return hashVal
+
+Algorithm insert(s):
+	Input: String s
+	Output: void (though a message is printed if insertion failed)
+	
+	{Check for and prevent repeats}
+	s <- lowercase version of s
+	
+	if (searchDelete(s, false) is true):
+		print message stating s is in table
+	else:
+		hashVal <- hashFn(s)
+		inserted <- false {flag for whether the insertion was successful}
+		j <- 0 {initialize the counter for quadratic probing}
+		while (inserted is false and j < hashTable.length):
+			curIndex <- (hashVal + j^2) % hashTable.length {Quadratic probing}
+			{If current index is empty, insert s there}
+			if (hashTable[curIndex].state is 0 or 2):
+				hashTable[curIndex].value <- s
+				hashTable[curIndex].state <- 1
+				inserted <- true
+			else:
+				{Collision occurred}
+				print message stating collision occurred at curIndex
+				j++ {Increment for next pass of quadratic probing}
+		if (inserted is false):
+			print error message stating insertion failed
+
+Algorithm searchDelete(s, delete):
+	Input: String s to search for, boolean delete that flags whether s should be deleted once found
+	Output: true if s was found, false otherwise
+	
+	hashVal <- hashFn(s)
+	found <- false {result of search}
+	keepGoing <- true {flag for whether search should continue}
+	j <- 0 {initialize the counter for quadratic probing}
+	while (keepGoing is true and j < hashTable.length):
+		curIndex <- (hashVal + j^2) % hashTable.length {Quadratic probing}
+		{if current index is empty and has never been filled, the search failed}
+		if (hashTable[curIndex].state is 0):
+			keepGoing <- false
+		else:
+			if (hashTable[curIndex] is s):
+				found <- true
+				keepGoing <- false
+				{if delete flag is on, clear the cell and mark it as deleted}
+				if (delete is true):
+					hashTable[curIndex].value <- ""
+					hashTable[curIndex].state <- 2
+			else:
+				j++
+	return found
+	

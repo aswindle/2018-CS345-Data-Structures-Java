@@ -1,0 +1,13 @@
+Alex Swindle
+aswindle
+CSCV 345 Lab 4 ADT Justification
+
+I chose to use an adjacency list structure for my graphs to allow easy access to all of the edges and vertices of the graph from multiple locations while not using as much space as an adjacency matrix requires. The Graph class itself depends on Vertex and Edge objects as well as the underlying SwindleList class present in both the Graph and Vertex classes.
+
+The SwindleList<T> class serves the same role the ArrayList<T> class would. It's a doubly linked list, allowing checking for emptiness (O(1)), insertion at the back (O(1)), accessing by index (in O(n) time), searching for an object (O(n) time), and popping from the front so that it can also serve as a queue.
+
+Each Vertex object has 3 basic properties: a name and 2 SwindleLists of edges connected to it (one for incoming edges, and one for outgoing edges). There are 4 other properties built-in that make Graph methods easier: a boolean for whether or not the vertex has been visited during a DFS or BFS; a 'level' integer to track at what point it was visited during a BFS; a DDist int, which will hold the current distance from the start during a run of Dijkstra's algorithm; and a path String that will store the shortest path from the start (as 'A-B-C' etc) after a run of Dijkstra's algorithm.
+
+Each Edge object is simpler, holding references to 2 vertices to represent the endpoints and an integer weight for the edge. There is also a type String that will be used to label each edge as a Discovery, Back, or Cross edge during a DFS or BFS, and the default label of "None" can also serve as a flag that the edge hasn't been visited yet on a given search.
+
+The Graph itself then holds a list of Edge objects (called E) and a list of Vertex objects (called V). Any time 2 vertices are connected with an edge, 3 things are updated: the start vertex's outgoing list; the end vertex's incoming list; and E itself, allowing the graph and the endpoints to access the other end of each edge. This allows easy runs of for loops on Vertices and Edges, getting all of the connections from either location.

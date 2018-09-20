@@ -1,0 +1,26 @@
+Alex Swindle
+aswindle
+CSCV 345 Lab 3 hash function justification
+
+My hash function is modeled on Java's built-in hashCode() function and then modified to work with the size of a specific hash table. That table size is hard coded to 53 in the table declaration, but not actually set in stone in my hash function itself.
+
+The hash value k is built up character by character from the input string, according to the formula
+k = k*7 + s[i]
+This has the effect of multiplying all previous indices by 7 before adding the current character's Unicode value, which by the end results in a value of k that be written as
+k = s[0] * 7^(n-1) + s[1]*7^(n-2) + ... + s[n-1]
+Justification:
+for i = 0, k = s[0]
+for i = 1, k = 7 * s[0] + s[1]
+for i = 2, k = 7 * [7 * s[0] + s[1]] + s[2] = 7^2 * s[0] + 7 * s[1] + s[2]
+for i = 3, k = 7^3 * s[0] + 7^2 * s[1] + 7 * s[2] + s[3]
+for i = n-1, the last index of s, k = 7^(n-1) * s[0] + 7^(n-2) * s[1] + ... + s[n-1]
+
+Once k is calculated, it's made to work within the size of the hash table by calculating k % (hashTable.length) and then making sure it's not less than zero. This guarantees that the final value is a valid index from 0 to hashTable.length-1, making it possible to index into the hashTable directly using the value.
+
+The 3 properties of a high-quality hash function that I highlighted in Homework 6 were ease of calculation, repeatability, and low collision rate. Based on those, this function is a high-quality one.
+
+Ease of calculation: this hash function only requires multiplication and addition, both of which are easy for a processor to do quickly.
+
+Repeatability: this function is entirely deterministic, based only on the Unicode value of the character at each index and the index itself. Thus the same string will always result in the same hash code, which is vital for being able to access values in a hash table.
+
+Low collision rate: this function results in relatively low collisions because both the character's value AND the index of that character are inputs to the function. If only one or the other were used, the function would frequently result in the same value. An index-only hash function would result in all strings of the same length having the same hash value regardless of the content: "abcd" and "wxyz" would be equivalent since they both have length 4. Similarly, a character-only hash function would mean strings of the same characters would have the same result regardless of their order: "abc" and "cba" would output the same value since the unicode values are the same. Combining both the character values and indices in this way therefore eliminates those collisions.

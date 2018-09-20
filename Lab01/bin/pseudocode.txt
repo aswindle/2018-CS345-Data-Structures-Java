@@ -1,0 +1,116 @@
+Alex Swindle
+CSCV 345 Lab 01
+Pseudocode for BinaryTree implementation
+
+class Node:
+	String value
+	Node left
+	Node right
+	int count
+	
+	Node(key):
+		value = key
+		left = null
+		right = null
+		count = 1
+
+class BinaryTree:
+	Private methods:
+	
+	Node root
+	
+	Algorithm printTreeRoot(root):
+		Input: starting node
+		Output: inorder traversal of tree
+
+		if root is null:
+			return ""
+		else:
+			return printTreeRoot(root.left) + 'count' copies of root.value + printTreeRoot(root.right)
+	
+	Algorithm isEmpty():
+		Input: None
+		Output: true if the tree is empty, false otherwise
+
+		if root is null, return true
+		else return false	
+	
+	Algorithm addRoot(root, key):
+		Input: starting Node, key to add
+		Output: a Node
+		
+		if root is null:
+			return new Node(key)
+		else if key == root.value:
+			increase root's count by 1
+		else if key < root.value:
+			root.left = addRoot(root.left, key)
+		else:
+			root.right = addRoot(root.right, key)
+		return root
+	
+	Algorithm getNode(root, key):
+		Input: starting Node, key to search for
+		Output: Node that contains the key
+		
+		if root is null:
+			return null
+		else if root.value == key:
+			return root
+		else if key < root.value:
+			return recursive call getNode(root.left, key)
+		else:
+			return recursive call getNode(root.right, key)
+
+	Algorithm getParent(String key):
+		Input: key whose parent node we want
+		Output: node that has a child containing key
+		
+		Node current = root
+		Node child = getNode(key)
+		while(current.left != child and current.right != child):
+			if  key < current.left.value:
+				current = current.left
+			else:
+				current = current.right
+		return current
+	
+	Algorithm removeNode(root, key):
+		Input: starting node, key to remove
+		Output: true if a node removed, false otherwise
+		
+		target = getNode(root, key)
+		if target is null:
+			return false
+		else:
+			4 cases:
+			Case 1: target has a count greater than 1
+				Decrease count by 1
+				
+			Case 2: target is a leaf
+				Get parent node
+				Set the child that is currently target to null
+					
+			Case 3: target has one child
+				Get parent node
+				If target is parent's left child, make parent's left child target's only child
+				If target is parent's right child, make parent's right child target's only child
+			
+			Case 4: target has two children
+				Swap target's value with the minimum of its right subtree
+				Call removeNode on target's right subtree with same key
+			
+			return true
+	
+	Public methods:
+	add(key):
+		call addRoot(root, key)
+	
+	remove(key):
+		call removeRoot(root, key)
+	
+	printTree():
+		call printTreeRoot(root)
+		
+	search(key):
+		call getNode(key), return if it was successful or null
